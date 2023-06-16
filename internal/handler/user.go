@@ -2,7 +2,7 @@ package handler
 
 import (
 	"fmt"
-	"go-backend-sample/internal/repository"
+	"github.com/traP-jp/h23s_26/internal/repository"
 	"net/http"
 
 	vd "github.com/go-ozzo/ozzo-validation"

@@ -1,9 +1,9 @@
 package main
 
 import (
-	"go-backend-sample/internal/handler"
-	"go-backend-sample/internal/pkg/config"
-	"go-backend-sample/internal/repository"
+	"github.com/traP-jp/h23s_26/internal/handler"
+	"github.com/traP-jp/h23s_26/internal/pkg/config"
+	"github.com/traP-jp/h23s_26/internal/repository"
 
 	"github.com/jmoiron/sqlx"
 	"github.com/labstack/echo/v4"

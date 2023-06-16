@@ -1,4 +1,4 @@
-module go-backend-sample // NOTE: github.com/ORGANIZATION/REPO_NAME などが好ましい
+module github.com/traP-jp/h23s_26
 
 go 1.20
 
