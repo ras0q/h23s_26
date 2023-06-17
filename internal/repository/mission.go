@@ -33,12 +33,12 @@ func (r *Repository) GetMissions(ctx context.Context) ([]*Mission, error) {
 }
 
 func (r *Repository) GetMission(ctx context.Context, missionID uuid.UUID) (*Mission, error) {
-	mission := &Mission{}
-	if err := r.db.SelectContext(ctx, &mission, "SELECT * FROM missions WHERE id = ?", missionID); err != nil {
+	mission := Mission{}
+	if err := r.db.GetContext(ctx, &mission, "SELECT * FROM missions WHERE id = ?", missionID); err != nil {
 		return nil, fmt.Errorf("select missions: %w", err)
 	}
 
-	return mission, nil
+	return &mission, nil
 }
 
 func (r *Repository) PostMission(ctx context.Context, params CreateMissionParams) (uuid.UUID, error) {
