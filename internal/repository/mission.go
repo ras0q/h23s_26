@@ -24,3 +24,12 @@ func (r *Repository) GetMissions(ctx context.Context) ([]*Mission, error) {
 
 	return missions, nil
 }
+
+func (r *Repository) GetMission(ctx context.Context, missionID uuid.UUID) (*Mission, error) {
+	mission := &Mission{}
+	if err := r.db.SelectContext(ctx, &mission, "SELECT * FROM missions WHERE id = ?", missionID); err != nil {
+		return nil, fmt.Errorf("select missions: %w", err)
+	}
+
+	return mission, nil
+}
