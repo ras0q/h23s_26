@@ -24,7 +24,7 @@ func (h *Handler) SetupRoutes(api *echo.Group) {
 	}
 
 	// User API
-	userAPI := api.Group("/user")
+	userAPI := api.Group("/users")
 	{
 		userAPI.GET("", h.GetUsers)
 		// userAPI.GET("/:userID", h.GetUser)
