@@ -67,6 +67,7 @@ func (h *Handler) GetMission(c echo.Context) error {
 		ID:          mission.ID,
 		Name:        mission.Name,
 		Description: mission.Description,
+		Achievers:   mission.Achievers,
 	}
 
 	return c.JSON(http.StatusOK, res)

@@ -37,7 +37,7 @@ func (r *Repository) GetMissions(ctx context.Context) ([]*Mission, error) {
 
 	for _, mission := range missions {
 		for _, achieveUser := range achieveUsers {
-			if mission.ID == achieveUser.MissionID{
+			if mission.ID == achieveUser.MissionID {
 				mission.Achievers = append(mission.Achievers, achieveUser.UserID)
 			}
 		}
@@ -50,6 +50,17 @@ func (r *Repository) GetMission(ctx context.Context, missionID uuid.UUID) (*Miss
 	mission := Mission{}
 	if err := r.db.GetContext(ctx, &mission, "SELECT * FROM missions WHERE id = ?", missionID); err != nil {
 		return nil, fmt.Errorf("select missions: %w", err)
+	}
+
+	achieveUsers := make([]*UserMissionRelation, 0)
+	if err := r.db.SelectContext(ctx, &achieveUsers, "SELECT * FROM user_mission_relations"); err != nil {
+		return nil, fmt.Errorf("get user_mission_relations from db: %w", err)
+	}
+
+	for _, achieveUser := range achieveUsers {
+		if mission.ID == achieveUser.MissionID {
+			mission.Achievers = append(mission.Achievers, achieveUser.UserID)
+		}
 	}
 
 	return &mission, nil
