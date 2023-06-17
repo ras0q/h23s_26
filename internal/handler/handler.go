@@ -42,9 +42,9 @@ func (h *Handler) SetupRoutes(api *echo.Group) {
 		missionAPI.GET("/:missionID", h.GetMission)
 	}
 
-	// // Ranking API
-	// rankingAPI := api.Group("/ranking")
-	// {
-	// 	rankingAPI.GET("", h.GetRanking)
-	// }
+	// Ranking API
+	rankingAPI := api.Group("/ranking")
+	{
+		rankingAPI.GET("", h.GetRanking)
+	}
 }
