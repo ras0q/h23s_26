@@ -13,11 +13,13 @@ type (
 		ID          uuid.UUID `db:"id"`
 		Name        string    `db:"name"`
 		Description string    `db:"description"`
+		CreatorID   string    `db:"creator_id"`
 	}
 
 	CreateMissionParams struct {
-		Name        string    
-		Description string    
+		Name        string
+		Description string
+		CreatorID   string
 	}
 )
 
@@ -41,10 +43,9 @@ func (r *Repository) GetMission(ctx context.Context, missionID uuid.UUID) (*Miss
 
 func (r *Repository) PostMission(ctx context.Context, params CreateMissionParams) (uuid.UUID, error) {
 	missionID := uuid.New()
-	if _, err := r.db.ExecContext(ctx, "INSERT INTO missions (id, name, description) VALUES (?, ?, ?)", missionID, params.Name, params.Description); err != nil {
+	if _, err := r.db.ExecContext(ctx, "INSERT INTO missions (id, name, description,creator_id) VALUES (?, ?, ?, ?)", missionID, params.Name, params.Description, params.CreatorID); err != nil {
 		return uuid.Nil, fmt.Errorf("insert mission: %w", err)
 	}
 
-	return missionID,nil
+	return missionID, nil
 }
-

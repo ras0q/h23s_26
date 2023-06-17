@@ -82,12 +82,13 @@ func (h *Handler) PostMission(c echo.Context) error {
 		vd.Field(&req.Description, vd.Required),
 	)
 	if err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, fmt.Errorf("invalid request body: %w", err)).SetInternal(err)
+		return echo.NewHTTPError(http.StatusBadRequest, fmt.Errorf("invalid request body: %w", err).Error()).SetInternal(err)
 	}
 
 	params := repository.CreateMissionParams{
 		Name:        req.Name,
 		Description: req.Description,
+		CreatorID: "user1",
 	}
 
 	missionID, err := h.repo.PostMission(c.Request().Context(), params)
