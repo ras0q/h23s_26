@@ -33,10 +33,10 @@ func (h *Handler) SetupRoutes(api *echo.Group) {
 	}
 
 	// Mission api
-	missionAPI := api.Group("/mission")
+	missionAPI := api.Group("/missions")
 	{
 		missionAPI.GET("", h.GetMissions)
-		// 	missionAPI.POST("", h.PostMission)
+		missionAPI.POST("", h.PostMission)
 		missionAPI.GET("/:missionID", h.GetMission)
 	}
 

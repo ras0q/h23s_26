@@ -8,9 +8,6 @@ CREATE TABLE IF NOT EXISTS missions (
 	name VARCHAR(255) NOT NULL,
 	description VARCHAR(255) NOT NULL,
 	creator_id VARCHAR(36) NOT NULL,
-	created_at DATETIME NOT NULL,
-	updated_at DATETIME NOT NULL,
-	deleted_at DATETIME,
 	PRIMARY KEY (id),
 	FOREIGN KEY (creator_id) REFERENCES users(id)
 );

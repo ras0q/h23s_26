@@ -28,8 +28,10 @@ func (r *Repository) SetupTables() error {
 	}
 
 	for _, query := range strings.Split(schema, ";") {
-		if _, err := r.db.Exec(query); err != nil {
-			return fmt.Errorf("setup tables: %w", err)
+		if len(query) > 0 {
+			if _, err := r.db.Exec(query); err != nil {
+				return fmt.Errorf("setup tables: %w", err)
+			}
 		}
 	}
 
