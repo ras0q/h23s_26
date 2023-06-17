@@ -108,6 +108,6 @@ func (h *Handler) PostMission(c echo.Context) error {
 		ID: missionID,
 	}
 
-	return c.JSON(http.StatusOK, res)
+	return c.JSON(http.StatusCreated, res)
 
 }

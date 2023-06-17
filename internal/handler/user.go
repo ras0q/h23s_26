@@ -73,7 +73,7 @@ func (h *Handler) PostUser(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError).SetInternal(err)
 	}
 
-	return c.JSON(http.StatusOK, param)
+	return c.NoContent(http.StatusCreated)
 
 }
 
