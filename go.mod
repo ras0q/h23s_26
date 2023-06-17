@@ -3,6 +3,7 @@ module github.com/traP-jp/h23s_26
 go 1.20
 
 require (
+	github.com/go-ozzo/ozzo-validation v3.6.0+incompatible
 	github.com/go-sql-driver/mysql v1.7.1
 	github.com/google/go-cmp v0.5.5
 	github.com/google/uuid v1.3.0
@@ -15,6 +16,7 @@ require (
 	github.com/Azure/go-ansiterm v0.0.0-20170929234023-d6e3b3328b78 // indirect
 	github.com/Microsoft/go-winio v0.6.0 // indirect
 	github.com/Nvveen/Gotty v0.0.0-20120604004816-cd527374f1e5 // indirect
+	github.com/asaskevich/govalidator v0.0.0-20230301143203-a9d515a09cc2 // indirect
 	github.com/cenkalti/backoff/v4 v4.1.3 // indirect
 	github.com/containerd/continuity v0.3.0 // indirect
 	github.com/docker/cli v20.10.17+incompatible // indirect
