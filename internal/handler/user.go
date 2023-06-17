@@ -1,6 +1,8 @@
 package handler
 
 import (
+	"database/sql"
+	"errors"
 	"net/http"
 
 	"github.com/google/uuid"
@@ -38,14 +40,17 @@ func (h *Handler) GetUsers(c echo.Context) error {
 }
 
 func (h *Handler) GetUser(c echo.Context) error {
-	user, err := h.repo.GetUser(c.Request().Context(),c.Param("userID"))
+	user, err := h.repo.GetUser(c.Request().Context(), c.Param("userID"))
 
-	if err != nil {
+	if errors.Is(err, sql.ErrNoRows) {
+		return echo.NewHTTPError(http.StatusNotFound).SetInternal(err)
+	} else if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError).SetInternal(err)
 	}
 
 	res := GetUserResponse{
-		ID: user.ID,
+		ID:       user.ID,
+		Achieves: user.AchieveMissions,
 	}
 
 	return c.JSON(http.StatusOK, res)
