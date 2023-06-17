@@ -36,3 +36,24 @@ func (h *Handler) GetMissions(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, res)
 }
+
+// GET /api/v1/missions/:missionID
+func (h *Handler) GetMission(c echo.Context) error {
+	missionID, err := uuid.Parse(c.Param("missionID"))
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, "invalid missionID").SetInternal(err)
+	}
+
+	mission, err := h.repo.GetMission(c.Request().Context(), missionID)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError).SetInternal(err)
+	}
+
+	res := GetMissionResponse{
+		ID:    mission.ID,
+		Name:  mission.Name,
+		Description: mission.Description,
+	}
+
+	return c.JSON(http.StatusOK, res)
+}

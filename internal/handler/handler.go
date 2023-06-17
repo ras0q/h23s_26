@@ -31,13 +31,13 @@ func (h *Handler) SetupRoutes(api *echo.Group) {
 	// 	userAPI.PATCH("/me/missions/:missionID", h.PatchMission)
 	// }
 
-	// // Mission api
-	// missionAPI := api.Group("/mission")
-	// {
-	// 	missionAPI.GET("", h.GetMissions)
-	// 	missionAPI.POST("", h.PostMission)
-	// 	missionAPI.GET("/:missionID", h.GetMission)
-	// }
+	// Mission api
+	missionAPI := api.Group("/mission")
+	{
+		missionAPI.GET("", h.GetMissions)
+		// 	missionAPI.POST("", h.PostMission)
+		missionAPI.GET("/:missionID", h.GetMission)
+	}
 
 	// // Ranking API
 	// rankingAPI := api.Group("/ranking")
