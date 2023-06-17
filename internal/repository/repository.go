@@ -2,6 +2,7 @@ package repository
 
 import (
 	"fmt"
+	"strings"
 
 	_ "embed"
 
@@ -20,8 +21,16 @@ func New(db *sqlx.DB) *Repository {
 var schema string
 
 func (r *Repository) SetupTables() error {
-	if _, err := r.db.Exec(schema); err != nil {
-		return fmt.Errorf("setup tables: %w", err)
+	// TODO: 初期化処理何とかする
+	var user User
+	if err := r.db.Get(&user, "SELECT * FROM users LIMIT 1"); err == nil {
+		return nil
+	}
+
+	for _, query := range strings.Split(schema, ";") {
+		if _, err := r.db.Exec(query); err != nil {
+			return fmt.Errorf("setup tables: %w", err)
+		}
 	}
 
 	return nil
