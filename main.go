@@ -7,6 +7,7 @@ import (
 	"github.com/traP-jp/h23s_26/internal/handler"
 	"github.com/traP-jp/h23s_26/internal/pkg/config"
 	"github.com/traP-jp/h23s_26/internal/repository"
+	"github.com/traP-jp/h23s_26/internal/repository/migration"
 	"golang.org/x/oauth2"
 
 	"github.com/jmoiron/sqlx"
@@ -34,11 +35,13 @@ func main() {
 	}
 	defer db.Close()
 
-	// setup repository
-	repo := repository.New(db)
-	if err := repo.SetupTables(); err != nil {
+	// migrate tables
+	if err := migration.MigrateTables(db.DB); err != nil {
 		e.Logger.Fatal(err)
 	}
+
+	// setup repository
+	repo := repository.New(db)
 
 	// setup routes
 	h := handler.New(repo, config.TraqOAuth2())
