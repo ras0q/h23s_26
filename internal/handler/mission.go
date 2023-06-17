@@ -37,6 +37,7 @@ func (h *Handler) GetMissions(c echo.Context) error {
 	return c.JSON(http.StatusOK, res)
 }
 
+// GET /api/v1/missions/:missionID
 func (h *Handler) GetMission(c echo.Context) error {
 	missionID, err := uuid.Parse(c.Param("missionID"))
 	if err != nil {
