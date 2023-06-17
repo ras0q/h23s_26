@@ -1,6 +1,7 @@
 package handler
 
 import (
+	traqoauth2 "github.com/ras0q/traq-oauth2"
 	"github.com/traP-jp/h23s_26/internal/handler/middleware"
 	"github.com/traP-jp/h23s_26/internal/repository"
 
@@ -8,12 +9,14 @@ import (
 )
 
 type Handler struct {
-	repo *repository.Repository
+	repo             *repository.Repository
+	traqOauth2Config *traqoauth2.Config
 }
 
-func New(repo *repository.Repository) *Handler {
+func New(repo *repository.Repository, traqOauth2Config *traqoauth2.Config) *Handler {
 	return &Handler{
-		repo: repo,
+		repo:             repo,
+		traqOauth2Config: traqOauth2Config,
 	}
 }
 
@@ -38,7 +41,7 @@ func (h *Handler) SetupRoutes(api *echo.Group) {
 	missionAPI := api.Group("/missions")
 	{
 		missionAPI.GET("", h.GetMissions)
-		missionAPI.POST("", h.PostMission, middleware.TRAPAuth())
+		missionAPI.POST("", h.PostMission, middleware.TrapAuth())
 		missionAPI.GET("/:missionID", h.GetMission)
 	}
 
@@ -47,4 +50,11 @@ func (h *Handler) SetupRoutes(api *echo.Group) {
 	// {
 	// 	rankingAPI.GET("", h.GetRanking)
 	// }
+
+	// Oauth2 API
+	oauth2API := api.Group("/oauth2")
+	{
+		oauth2API.GET("/authorize", h.Authorize)
+		oauth2API.GET("/callback", h.Callback)
+	}
 }

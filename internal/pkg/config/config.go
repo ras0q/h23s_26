@@ -5,6 +5,16 @@ import (
 	"os"
 
 	"github.com/go-sql-driver/mysql"
+	traqoauth2 "github.com/ras0q/traq-oauth2"
+)
+
+type SessionKey string
+
+const (
+	SessionName string = "traq-oauth2-example"
+
+	CodeVerifierKey SessionKey = "code_verifier"
+	TokenKey        SessionKey = "access_token"
 )
 
 func getEnv(key, defaultValue string) string {
@@ -32,4 +42,11 @@ func MySQL() *mysql.Config {
 		),
 		DBName: getEnv("DB_NAME", "backend_sample"),
 	}
+}
+
+func TraqOAuth2() *traqoauth2.Config {
+	return traqoauth2.NewConfig(
+		getEnv("TRAQ_CLIENT_ID", ""),
+		getEnv("TRAQ_REDIRECT_URL", ""),
+	)
 }

@@ -1,5 +1,6 @@
 /.env
 /tmp/
+.env
 
 # binary
 h23s_26
