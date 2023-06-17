@@ -18,7 +18,7 @@ type (
 	UserMissionRelation struct {
 		ID        uuid.UUID `db:"id"`         // primary key
 		UserID    string    `db:"user_id"`    // foreign key
-		MissionID string    `db:"mission_id"` // foreign key
+		MissionID uuid.UUID `db:"mission_id"` // foreign key
 	}
 )
 

@@ -14,6 +14,7 @@ type (
 		Name        string    `db:"name"`
 		Description string    `db:"description"`
 		CreatorID   string    `db:"creator_id"`
+		Achievers   []string
 	}
 
 	CreateMissionParams struct {
@@ -27,6 +28,19 @@ func (r *Repository) GetMissions(ctx context.Context) ([]*Mission, error) {
 	missions := []*Mission{}
 	if err := r.db.SelectContext(ctx, &missions, "SELECT * FROM missions"); err != nil {
 		return nil, fmt.Errorf("select missions: %w", err)
+	}
+
+	achieveUsers := make([]*UserMissionRelation, 0)
+	if err := r.db.SelectContext(ctx, &achieveUsers, "SELECT * FROM user_mission_relations"); err != nil {
+		return nil, fmt.Errorf("get user_mission_relations from db: %w", err)
+	}
+
+	for _, mission := range missions {
+		for _, achieveUser := range achieveUsers {
+			if mission.ID == achieveUser.MissionID{
+				mission.Achievers = append(mission.Achievers, achieveUser.UserID)
+			}
+		}
 	}
 
 	return missions, nil

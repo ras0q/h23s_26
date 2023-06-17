@@ -15,18 +15,19 @@ type (
 	GetMissionsResponse []GetMissionResponse
 
 	GetMissionResponse struct {
-		ID          uuid.UUID `db:"id"`
-		Name        string    `db:"name"`
-		Description string    `db:"description"`
+		ID          uuid.UUID `json:"id"`
+		Name        string    `json:"name"`
+		Description string    `json:"description"`
+		Achievers   []string  `json:"achievers"`
 	}
 
 	CreateMissionRequest struct {
-		Name        string    `db:"name"`
-		Description string    `db:"description"`
+		Name        string `json:"name"`
+		Description string `json:"description"`
 	}
 
 	CreateMissionResponse struct {
-		ID uuid.UUID 
+		ID uuid.UUID
 	}
 )
 
@@ -43,6 +44,7 @@ func (h *Handler) GetMissions(c echo.Context) error {
 			ID:          mission.ID,
 			Name:        mission.Name,
 			Description: mission.Description,
+			Achievers:   mission.Achievers,
 		}
 	}
 
@@ -88,7 +90,7 @@ func (h *Handler) PostMission(c echo.Context) error {
 	params := repository.CreateMissionParams{
 		Name:        req.Name,
 		Description: req.Description,
-		CreatorID: "user1",
+		CreatorID:   "user1",
 	}
 
 	missionID, err := h.repo.PostMission(c.Request().Context(), params)
