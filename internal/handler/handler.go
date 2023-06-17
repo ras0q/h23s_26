@@ -23,13 +23,14 @@ func (h *Handler) SetupRoutes(api *echo.Group) {
 		pingAPI.GET("", h.Ping)
 	}
 
-	// // User API
-	// userAPI := api.Group("/user")
-	// {
-	// 	userAPI.GET("/:userID", h.GetUser)
-	// 	userAPI.GET("/me", h.GetMe)
-	// 	userAPI.PATCH("/me/missions/:missionID", h.PatchMission)
-	// }
+	// User API
+	userAPI := api.Group("/users")
+	{
+		userAPI.GET("", h.GetUsers)
+		// userAPI.GET("/:userID", h.GetUser)
+		// userAPI.GET("/me", h.GetMe)
+		// userAPI.PATCH("/me/missions/:missionID", h.PatchMission)
+	}
 
 	// Mission api
 	missionAPI := api.Group("/mission")
