@@ -51,6 +51,7 @@ func (r *Repository) GetUser(ctx context.Context, userID string) (*User, error) 
 		return nil, fmt.Errorf("get users from db: %w", err)
 	}
 
+	user.AchieveMissions = []uuid.UUID{}
 	if err := r.db.SelectContext(ctx, &user.AchieveMissions, "SELECT mission_id FROM user_mission_relations WHERE user_id= ? ", userID); err != nil {
 		return nil, fmt.Errorf("get user_mission_relations from db: %w", err)
 	}

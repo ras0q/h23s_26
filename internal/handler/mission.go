@@ -1,6 +1,8 @@
 package handler
 
 import (
+	"database/sql"
+	"errors"
 	"fmt"
 	"net/http"
 
@@ -59,7 +61,10 @@ func (h *Handler) GetMission(c echo.Context) error {
 	}
 
 	mission, err := h.repo.GetMission(c.Request().Context(), missionID)
-	if err != nil {
+
+	if errors.Is(err, sql.ErrNoRows) {
+		return echo.NewHTTPError(http.StatusNotFound).SetInternal(err)
+	} else if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError).SetInternal(err)
 	}
 
