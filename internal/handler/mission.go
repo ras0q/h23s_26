@@ -21,17 +21,16 @@ type (
 	}
 
 	CreateMissionRequest struct {
-		ID          uuid.UUID `db:"id"`
 		Name        string    `db:"name"`
 		Description string    `db:"description"`
 	}
 
 	CreateMissionResponse struct {
-		ID uuid.UUID `db:"id"`
+		ID uuid.UUID 
 	}
 )
 
-// GET /api/v1/mission/
+// GET /api/v1/missions/
 func (h *Handler) GetMissions(c echo.Context) error {
 	missions, err := h.repo.GetMissions(c.Request().Context())
 	if err != nil {
@@ -50,7 +49,7 @@ func (h *Handler) GetMissions(c echo.Context) error {
 	return c.JSON(http.StatusOK, res)
 }
 
-// GET /api/v1/mission/:missionID
+// GET /api/v1/missions/:missionID
 func (h *Handler) GetMission(c echo.Context) error {
 	missionID, err := uuid.Parse(c.Param("missionID"))
 	if err != nil {
