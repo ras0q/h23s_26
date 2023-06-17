@@ -52,7 +52,9 @@ func (r *Repository) GetMission(ctx context.Context, missionID uuid.UUID) (*Miss
 		return nil, fmt.Errorf("select missions: %w", err)
 	}
 
-	r.db.SelectContext(ctx, &mission.Achievers, "SELECT user_id FROM user_mission_relations WHERE mission_id=?", missionID)
+	if err := r.db.SelectContext(ctx, &mission.Achievers, "SELECT user_id FROM user_mission_relations WHERE mission_id=?", missionID); err != nil {
+		return nil, fmt.Errorf("get user_mission_relations from db: %w", err)
+	}
 
 	return &mission, nil
 }
