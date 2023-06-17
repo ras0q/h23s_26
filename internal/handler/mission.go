@@ -1,10 +1,13 @@
 package handler
 
 import (
+	"fmt"
 	"net/http"
 
+	vd "github.com/go-ozzo/ozzo-validation"
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
+	"github.com/traP-jp/h23s_26/internal/repository"
 )
 
 // スキーマ定義
@@ -16,9 +19,19 @@ type (
 		Name        string    `db:"name"`
 		Description string    `db:"description"`
 	}
+
+	CreateMissionRequest struct {
+		ID          uuid.UUID `db:"id"`
+		Name        string    `db:"name"`
+		Description string    `db:"description"`
+	}
+
+	CreateMissionResponse struct {
+		ID uuid.UUID `db:"id"`
+	}
 )
 
-// GET /api/v1/missions/
+// GET /api/v1/mission/
 func (h *Handler) GetMissions(c echo.Context) error {
 	missions, err := h.repo.GetMissions(c.Request().Context())
 	if err != nil {
@@ -37,7 +50,7 @@ func (h *Handler) GetMissions(c echo.Context) error {
 	return c.JSON(http.StatusOK, res)
 }
 
-// GET /api/v1/missions/:missionID
+// GET /api/v1/mission/:missionID
 func (h *Handler) GetMission(c echo.Context) error {
 	missionID, err := uuid.Parse(c.Param("missionID"))
 	if err != nil {
@@ -50,10 +63,43 @@ func (h *Handler) GetMission(c echo.Context) error {
 	}
 
 	res := GetMissionResponse{
-		ID:    mission.ID,
-		Name:  mission.Name,
+		ID:          mission.ID,
+		Name:        mission.Name,
 		Description: mission.Description,
 	}
 
 	return c.JSON(http.StatusOK, res)
+}
+
+// POST /api/v1/missions :traP authorization needed:
+func (h *Handler) PostMission(c echo.Context) error {
+	req := new(CreateMissionRequest)
+	if err := c.Bind(req); err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, "invalid request body").SetInternal(err)
+	}
+	err := vd.ValidateStruct(
+		req,
+		vd.Field(&req.Name, vd.Required),
+		vd.Field(&req.Description, vd.Required),
+	)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, fmt.Errorf("invalid request body: %w", err)).SetInternal(err)
+	}
+
+	params := repository.CreateMissionParams{
+		Name:        req.Name,
+		Description: req.Description,
+	}
+
+	missionID, err := h.repo.PostMission(c.Request().Context(), params)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError).SetInternal(err)
+	}
+
+	res := CreateMissionResponse{
+		ID: missionID,
+	}
+
+	return c.JSON(http.StatusOK, res)
+
 }
