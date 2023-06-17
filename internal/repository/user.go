@@ -43,3 +43,17 @@ func (r *Repository) GetUsers(ctx context.Context) ([]*User, error) {
 
 	return users, nil
 }
+
+func (r *Repository) GetUser(ctx context.Context, userID string) (*User, error) {
+	user := User{}
+	if err := r.db.GetContext(ctx, &user, "SELECT * FROM users WHERE id= ? ", userID); err != nil {
+		return nil, fmt.Errorf("get users from db: %w", err)
+	}
+
+	if err := r.db.SelectContext(ctx, &user.AchieveMissions, "SELECT mission_id FROM user_mission_relations WHERE user_id= ? ", userID); err != nil {
+		return nil, fmt.Errorf("get user_mission_relations from db: %w", err)
+	}
+
+	return &user, nil
+
+}

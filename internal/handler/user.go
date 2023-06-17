@@ -33,3 +33,18 @@ func (h *Handler) GetUsers(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, res)
 }
+
+func (h *Handler) GetUser(c echo.Context) error {
+	user, err := h.repo.GetUser(c.Request().Context(),c.Param("userID"))
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError).SetInternal(err)
+	}
+
+	res := GetUserResponse{
+		ID: user.ID,
+	}
+
+	return c.JSON(http.StatusOK, res)
+
+}
