@@ -7,14 +7,13 @@ import (
 	"github.com/google/uuid"
 )
 
-type(
+type (
 	// missons table
 	Mission struct {
-		ID uuid.UUID `db:"id"`
-		Name string `db:"name"`
-		Description string `db:"description"`
+		ID          uuid.UUID `db:"id"`
+		Name        string    `db:"name"`
+		Description string    `db:"description"`
 	}
-
 )
 
 func (r *Repository) GetMissions(ctx context.Context) ([]*Mission, error) {

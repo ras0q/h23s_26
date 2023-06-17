@@ -7,14 +7,14 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-//スキーマ定義
+// スキーマ定義
 type (
 	GetMissionsResponse []GetMissionResponse
 
 	GetMissionResponse struct {
-		ID uuid.UUID `db:"id"`
-		Name string `db:"name"`
-		Description string `db:"description"`
+		ID          uuid.UUID `db:"id"`
+		Name        string    `db:"name"`
+		Description string    `db:"description"`
 	}
 )
 
@@ -28,12 +28,11 @@ func (h *Handler) GetMissions(c echo.Context) error {
 	res := make(GetMissionsResponse, len(missions))
 	for i, mission := range missions {
 		res[i] = GetMissionResponse{
-			ID:    mission.ID,
-			Name:  mission.Name,
+			ID:          mission.ID,
+			Name:        mission.Name,
 			Description: mission.Description,
 		}
 	}
 
 	return c.JSON(http.StatusOK, res)
 }
-
