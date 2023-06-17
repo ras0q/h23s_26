@@ -20,6 +20,10 @@ type (
 		UserID    string    `db:"user_id"`    // foreign key
 		MissionID uuid.UUID `db:"mission_id"` // foreign key
 	}
+
+	CreateUserParams struct {
+		ID string
+	}
 )
 
 func (r *Repository) GetUsers(ctx context.Context) ([]*User, error) {
@@ -58,4 +62,12 @@ func (r *Repository) GetUser(ctx context.Context, userID string) (*User, error) 
 
 	return &user, nil
 
+}
+
+func (r *Repository) PostUser(ctx context.Context, params CreateUserParams) error {
+	if _, err := r.db.ExecContext(ctx, "INSERT INTO users (id) VALUES (?)", params.ID); err != nil {
+		return fmt.Errorf("insert user: %w", err)
+	}
+
+	return nil
 }
