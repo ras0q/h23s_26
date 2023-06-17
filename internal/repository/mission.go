@@ -4,16 +4,15 @@ import (
 	"context"
 	"fmt"
 
-	//"github.com/google/uuid"
+	"github.com/google/uuid"
 )
 
 type(
 	// missons table
 	Mission struct {
-		ID string `json:"id"`
-		Name string `json:"name"`
-		Description string `json:"description"`
-		Achivers []string `json:"achivers"`
+		ID uuid.UUID `db:"id"`
+		Name string `db:"name"`
+		Description string `db:"description"`
 	}
 
 )
