@@ -3,6 +3,7 @@ package handler
 import (
 	"net/http"
 
+	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
 )
 
@@ -12,7 +13,7 @@ type (
 	GetUserResponse struct {
 		ID string `json:"id"`
 		// Ranking  int         `json:"ranking"`
-		// Achieves []uuid.UUID `json:"achieves"`
+		Achieves []uuid.UUID `json:"achieves"`
 	}
 )
 
@@ -28,6 +29,8 @@ func (h *Handler) GetUsers(c echo.Context) error {
 	for i, user := range users {
 		res[i] = GetUserResponse{
 			ID: user.ID,
+			// Ranking:  user.Ranking,
+			Achieves: user.AchieveMissions,
 		}
 	}
 

@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"github.com/traP-jp/h23s_26/internal/handler/middleware"
 	"github.com/traP-jp/h23s_26/internal/repository"
 
 	"github.com/labstack/echo/v4"
@@ -28,15 +29,15 @@ func (h *Handler) SetupRoutes(api *echo.Group) {
 	{
 		userAPI.GET("", h.GetUsers)
 		userAPI.GET("/:userID", h.GetUser)
-		// userAPI.GET("/me", h.GetMe)
-		// userAPI.PATCH("/me/missions/:missionID", h.PatchMission)
+		// userAPI.GET("/me", h.GetMe, middleware.TRAPAuth())
+		// userAPI.PATCH("/me/missions/:missionID", h.PatchMission, middleware.TRAPAuth())
 	}
 
 	// Mission api
 	missionAPI := api.Group("/missions")
 	{
 		missionAPI.GET("", h.GetMissions)
-		missionAPI.POST("", h.PostMission)
+		missionAPI.POST("", h.PostMission, middleware.TRAPAuth())
 		missionAPI.GET("/:missionID", h.GetMission)
 	}
 
