@@ -1,3 +1,4 @@
+-- +goose Up
 CREATE TABLE IF NOT EXISTS users (
 	id VARCHAR(36) NOT NULL,
 	PRIMARY KEY (id)
@@ -31,3 +32,8 @@ INSERT INTO user_mission_relations (id, user_id, mission_id) VALUES
 	("8b420cdf-a8e1-4317-b9a2-1fc43059a66f", "user1", "fdc91790-41a1-4e3a-a5ba-af4600efedec"),
 	("b1b2b3b4-b5b6-b7b8-b9ba-bcbdbebf0000", "user2", "fdc91790-41a1-4e3a-a5ba-af4600efedec"),
 	("b1b2b3b4-b5b6-b7b8-b9ba-bcbdbebf0001", "user1", "101a5594-7ead-4255-8084-b245b69c0f0d");
+
+-- +goose Down
+DROP TABLE IF EXISTS user_mission_relations;
+DROP TABLE IF EXISTS missions;
+DROP TABLE IF EXISTS users;

@@ -10,6 +10,7 @@ require (
 	github.com/jmoiron/sqlx v1.3.5
 	github.com/labstack/echo-contrib v0.15.0
 	github.com/labstack/echo/v4 v4.10.2
+	github.com/pressly/goose/v3 v3.11.2
 	github.com/ras0q/traq-oauth2 v0.1.1
 	golang.org/x/oauth2 v0.9.0
 )
