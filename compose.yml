@@ -17,6 +17,8 @@ services:
       DB_HOST: mysql
       DB_PORT: "3306"
       DB_NAME: app
+      TRAQ_CLIENT_ID: ${TRAQ_CLIENT_ID}
+      TRAQ_REDIRECT_URL: ${TRAQ_REDIRECT_URL}
     depends_on:
       mysql:
         condition: service_healthy
