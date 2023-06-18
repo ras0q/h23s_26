@@ -15,6 +15,7 @@ const (
 
 	CodeVerifierKey SessionKey = "code_verifier"
 	TokenKey        SessionKey = "access_token"
+	TraqIDKey       SessionKey = "user_id"
 )
 
 func getEnv(key, defaultValue string) string {
@@ -40,7 +41,8 @@ func MySQL() *mysql.Config {
 			getEnv("DB_HOST", "localhost"),
 			getEnv("DB_PORT", "3306"),
 		),
-		DBName: getEnv("DB_NAME", "backend_sample"),
+		DBName:               getEnv("DB_NAME", "backend_sample"),
+		AllowNativePasswords: true,
 	}
 }
 

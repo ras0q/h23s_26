@@ -7,6 +7,7 @@ import (
 	"github.com/labstack/echo/v4"
 	traqoauth2 "github.com/ras0q/traq-oauth2"
 	"github.com/traP-jp/h23s_26/internal/pkg/config"
+	"github.com/traPtitech/go-traq"
 )
 
 type (
@@ -17,6 +18,10 @@ type (
 
 	CallbackRequest struct {
 		Code string `query:"code"`
+	}
+
+	CallbackResponse struct {
+		ID string `json:"id"`
 	}
 )
 
@@ -79,6 +84,18 @@ func (h *Handler) Callback(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError).SetInternal(err)
 	}
 
-	return c.String(http.StatusOK, "You are logged in!")
-	
+	traqconf := traq.NewConfiguration()
+	traqconf.HTTPClient = h.traqOauth2Config.Client(c.Request().Context(), tok)
+	client := traq.NewAPIClient(traqconf)
+
+	user, _, err := client.MeApi.GetMe(c.Request().Context()).Execute()
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError).SetInternal(err)
+	}
+
+	sess.Values[config.TraqIDKey] = user.Name
+
+	return c.JSON(http.StatusOK, CallbackResponse{
+		ID: user.Name,
+	})
 }
