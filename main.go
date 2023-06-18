@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/gob"
+	"net/http"
 
 	"github.com/gorilla/sessions"
 	"github.com/traP-jp/h23s_26/internal/handler"
@@ -24,6 +25,9 @@ func main() {
 	e := echo.New()
 
 	// middlewares
+	corsConfig := middleware.DefaultCORSConfig
+	corsConfig.AllowMethods = append(corsConfig.AllowMethods, http.MethodOptions)
+	e.Use(middleware.CORSWithConfig(corsConfig))
 	e.Use(session.Middleware(sessions.NewCookieStore([]byte("secret"))))
 	e.Use(middleware.Recover())
 	e.Use(middleware.Logger())
