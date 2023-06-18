@@ -2,7 +2,6 @@ package handler
 
 import (
 	traqoauth2 "github.com/ras0q/traq-oauth2"
-	"github.com/traP-jp/h23s_26/internal/handler/middleware"
 	"github.com/traP-jp/h23s_26/internal/repository"
 
 	"github.com/labstack/echo/v4"
@@ -34,22 +33,23 @@ func (h *Handler) SetupRoutes(api *echo.Group) {
 		userAPI.POST("", h.PostUser)
 		userAPI.GET("/:userID", h.GetUser)
 		// userAPI.GET("/me", h.GetMe, middleware.TRAPAuth())
-		// userAPI.PATCH("/me/missions/:missionID", h.PatchMission, middleware.TRAPAuth())
+		//userAPI.PATCH("/:userID/missions/:missionID", h.PatchMission, middleware.TrapAuth())
+		userAPI.PATCH("/:userID/missions/:missionID", h.PatchMission)
 	}
 
 	// Mission api
 	missionAPI := api.Group("/missions")
 	{
 		missionAPI.GET("", h.GetMissions)
-		missionAPI.POST("", h.PostMission, middleware.TrapAuth())
+		missionAPI.POST("", h.PostMission)
 		missionAPI.GET("/:missionID", h.GetMission)
 	}
 
 	// Ranking API
-	 rankingAPI := api.Group("/ranking")
-	 {
-	 	rankingAPI.GET("", h.GetRanking)
-	 }
+	rankingAPI := api.Group("/ranking")
+	{
+		rankingAPI.GET("", h.GetRanking)
+	}
 
 	// Oauth2 API
 	oauth2API := api.Group("/oauth2")
