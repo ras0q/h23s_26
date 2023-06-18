@@ -99,6 +99,7 @@ func (h *Handler) GetUser(c echo.Context) error {
 
 	res := GetUserResponse{
 		ID:       user.ID,
+		Ranking:  user.Rank,
 		Achieves: user.AchieveMissions,
 	}
 
