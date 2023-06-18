@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/gob"
 	"net/http"
+	"strings"
 
 	"github.com/gorilla/sessions"
 	"github.com/traP-jp/h23s_26/internal/handler"
@@ -28,6 +29,29 @@ func main() {
 	corsConfig := middleware.DefaultCORSConfig
 	corsConfig.AllowMethods = append(corsConfig.AllowMethods, http.MethodOptions)
 	e.Use(middleware.CORSWithConfig(corsConfig))
+
+	proxyConfig := middleware.DefaultProxyConfig
+	proxyConfig.Balancer = middleware.NewRoundRobinBalancer([]*middleware.ProxyTarget{
+		{
+			URL: config.ClientURL(),
+		},
+	})
+
+	proxyConfig.Skipper = func(c echo.Context) bool {
+		if strings.HasPrefix(c.Path(), "/api/v1") {
+			return true
+		}
+		c.Request().Host = config.ClientURL().Host
+		return false
+	}
+	proxyConfig.Rewrite = map[string]string{
+		"/dashboard*": "/",
+		"/ranking*":   "/",
+		"/mission*":   "/",
+	}
+
+	e.Use(middleware.ProxyWithConfig(proxyConfig))
+
 	e.Use(session.Middleware(sessions.NewCookieStore([]byte("secret"))))
 	e.Use(middleware.Recover())
 	e.Use(middleware.Logger())

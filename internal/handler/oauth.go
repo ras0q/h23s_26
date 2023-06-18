@@ -101,7 +101,5 @@ func (h *Handler) Callback(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError).SetInternal(err)
 	}
 
-	return c.JSON(http.StatusOK, CallbackResponse{
-		ID: user.Name,
-	})
+	return c.Redirect(http.StatusFound, "/")
 }

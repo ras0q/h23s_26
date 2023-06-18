@@ -2,6 +2,7 @@ package config
 
 import (
 	"fmt"
+	"net/url"
 	"os"
 
 	"github.com/go-sql-driver/mysql"
@@ -51,4 +52,9 @@ func TraqOAuth2() *traqoauth2.Config {
 		getEnv("TRAQ_CLIENT_ID", ""),
 		getEnv("TRAQ_REDIRECT_URL", ""),
 	)
+}
+
+func ClientURL() *url.URL {
+	u, _ := url.Parse(getEnv("CLIENT_URL", "http://localhost:3000"))
+	return u
 }
