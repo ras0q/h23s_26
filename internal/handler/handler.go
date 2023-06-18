@@ -34,7 +34,8 @@ func (h *Handler) SetupRoutes(api *echo.Group) {
 		userAPI.POST("", h.PostUser)
 		userAPI.GET("/:userID", h.GetUser)
 		// userAPI.GET("/me", h.GetMe, middleware.TRAPAuth())
-		// userAPI.PATCH("/me/missions/:missionID", h.PatchMission, middleware.TRAPAuth())
+		userAPI.PATCH("/:userID/missions/:missionID", h.PatchMission, middleware.TrapAuth())
+
 	}
 
 	// Mission api
@@ -46,10 +47,10 @@ func (h *Handler) SetupRoutes(api *echo.Group) {
 	}
 
 	// Ranking API
-	 rankingAPI := api.Group("/ranking")
-	 {
-	 	rankingAPI.GET("", h.GetRanking)
-	 }
+	rankingAPI := api.Group("/ranking")
+	{
+		rankingAPI.GET("", h.GetRanking)
+	}
 
 	// Oauth2 API
 	oauth2API := api.Group("/oauth2")

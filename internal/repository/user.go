@@ -24,6 +24,12 @@ type (
 	CreateUserParams struct {
 		ID string
 	}
+
+	PatchMissionParams struct {
+		Clear     bool      `db:"-"`
+		UserID    string    `db:"user_id"`
+		MissionID uuid.UUID `db:"mission_id"`
+	}
 )
 
 func (r *Repository) GetUsers(ctx context.Context) ([]*User, error) {
@@ -67,6 +73,24 @@ func (r *Repository) GetUser(ctx context.Context, userID string) (*User, error) 
 func (r *Repository) PostUser(ctx context.Context, params CreateUserParams) error {
 	if _, err := r.db.ExecContext(ctx, "INSERT INTO users (id) VALUES (?)", params.ID); err != nil {
 		return fmt.Errorf("insert user: %w", err)
+	}
+
+	return nil
+}
+
+func (r *Repository) PatchMission(ctx context.Context, params PatchMissionParams) error {
+	if params.Clear {
+		patchID := uuid.New()
+
+		if _, err := r.db.ExecContext(ctx, "INSERT IGNORE INTO user_mission_relations(id,user_id,mission_id) VALUES(?,?,?)", patchID, params.UserID, params.MissionID); err != nil {
+			return fmt.Errorf("patch mission: %w", err)
+		}
+		return nil
+
+	}
+
+	if _, err := r.db.ExecContext(ctx, "DELETE FROM user_mission_relations WHERE user_id= ? AND mission_id= ? ", params.UserID, params.MissionID); err != nil {
+		return fmt.Errorf("patch mission: %w", err)
 	}
 
 	return nil

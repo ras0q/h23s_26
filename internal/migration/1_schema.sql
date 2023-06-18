@@ -19,7 +19,8 @@ CREATE TABLE IF NOT EXISTS user_mission_relations (
 	mission_id CHAR(36) NOT NULL,
 	PRIMARY KEY (id),
 	FOREIGN KEY (user_id) REFERENCES users(id),
-	FOREIGN KEY (mission_id) REFERENCES missions(id)
+	FOREIGN KEY (mission_id) REFERENCES missions(id),
+	UNIQUE mission_id_user_id (mission_id, user_id)
 );
 
 INSERT INTO users (id) VALUES

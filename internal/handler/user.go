@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"time"
 
 	vd "github.com/go-ozzo/ozzo-validation"
 	"github.com/google/uuid"
@@ -25,6 +26,10 @@ type (
 		ID string `json:"id"`
 	}
 
+	PatchMissionRequest struct {
+		Clear     bool      `json:"clear"`
+		ClearedAt time.Time `json:"cleared_at"`
+	}
 )
 
 // GET /users
@@ -93,5 +98,46 @@ func (h *Handler) GetUser(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, res)
+
+}
+
+// PATCH /users/:userID/missions/:missionID
+
+func (h *Handler) PatchMission(c echo.Context) error {
+	missionID, err := uuid.Parse(c.Param("missionID"))
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, "invalid missionID").SetInternal(err)
+	}
+
+	req := new(PatchMissionRequest)
+	if err := c.Bind(req); err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, "invalid request body").SetInternal(err)
+	}
+
+	err = vd.ValidateStruct(
+		req,
+		vd.Field(&req.Clear),
+		vd.Field(&req.ClearedAt, vd.Required),
+	)
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, fmt.Errorf("invalid request body: %w", err).Error()).SetInternal(err)
+	}
+
+	param := repository.PatchMissionParams{
+		Clear:     req.Clear,
+		UserID:    c.Param("userID"),
+		MissionID: missionID,
+	}
+
+	err = h.repo.PatchMission(c.Request().Context(), param)
+
+	if errors.Is(err, sql.ErrNoRows) {
+		return echo.NewHTTPError(http.StatusNotFound).SetInternal(err)
+	} else if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError).SetInternal(err)
+	}
+
+	return c.NoContent(http.StatusOK)
 
 }
