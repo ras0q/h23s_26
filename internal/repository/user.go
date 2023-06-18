@@ -75,7 +75,7 @@ func (r *Repository) GetUser(ctx context.Context, userID string) (*User, error) 
 }
 
 func (r *Repository) PostUser(ctx context.Context, params CreateUserParams) error {
-	if _, err := r.db.ExecContext(ctx, "INSERT INTO users (id) VALUES (?)", params.ID); err != nil {
+	if _, err := r.db.ExecContext(ctx, "INSERT IGNORE INTO users (id) VALUES (?)", params.ID); err != nil {
 		return fmt.Errorf("insert user: %w", err)
 	}
 

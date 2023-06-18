@@ -7,6 +7,7 @@ import (
 	"github.com/labstack/echo/v4"
 	traqoauth2 "github.com/ras0q/traq-oauth2"
 	"github.com/traP-jp/h23s_26/internal/pkg/config"
+	"github.com/traP-jp/h23s_26/internal/repository"
 	"github.com/traPtitech/go-traq"
 )
 
@@ -91,6 +92,12 @@ func (h *Handler) Callback(c echo.Context) error {
 	sess.Values[config.TokenKey] = tok
 	sess.Values[config.TraqIDKey] = user.Name
 	if err := sess.Save(c.Request(), c.Response()); err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError).SetInternal(err)
+	}
+
+	if err := h.repo.PostUser(c.Request().Context(), repository.CreateUserParams{
+		ID: user.Name,
+	}); err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError).SetInternal(err)
 	}
 
