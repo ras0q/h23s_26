@@ -12,6 +12,7 @@ require (
 	github.com/labstack/echo/v4 v4.10.2
 	github.com/pressly/goose/v3 v3.11.2
 	github.com/ras0q/traq-oauth2 v0.1.1
+	github.com/traPtitech/go-traq v0.0.0-20230615103803-82fa0621d359
 	golang.org/x/oauth2 v0.9.0
 )
 

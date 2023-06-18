@@ -15,6 +15,7 @@ const (
 
 	CodeVerifierKey SessionKey = "code_verifier"
 	TokenKey        SessionKey = "access_token"
+	TraqIDKey       SessionKey = "user_id"
 )
 
 func getEnv(key, defaultValue string) string {
