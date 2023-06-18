@@ -45,11 +45,11 @@ func (h *Handler) SetupRoutes(api *echo.Group) {
 		missionAPI.GET("/:missionID", h.GetMission)
 	}
 
-	// // Ranking API
-	// rankingAPI := api.Group("/ranking")
-	// {
-	// 	rankingAPI.GET("", h.GetRanking)
-	// }
+	// Ranking API
+	 rankingAPI := api.Group("/ranking")
+	 {
+	 	rankingAPI.GET("", h.GetRanking)
+	 }
 
 	// Oauth2 API
 	oauth2API := api.Group("/oauth2")
