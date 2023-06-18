@@ -119,6 +119,7 @@ func (h *Handler) GetMe(c echo.Context) error {
 
 	res := GetUserResponse{
 		ID:       user.ID,
+		Ranking:  user.Rank,
 		Achieves: user.AchieveMissions,
 	}
 
