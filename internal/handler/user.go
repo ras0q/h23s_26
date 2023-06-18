@@ -141,7 +141,7 @@ func (h *Handler) PatchMission(c echo.Context) error {
 	err = vd.ValidateStruct(
 		req,
 		vd.Field(&req.Clear),
-		vd.Field(&req.ClearedAt, vd.Required),
+		vd.Field(&req.ClearedAt),
 	)
 
 	if err != nil {
