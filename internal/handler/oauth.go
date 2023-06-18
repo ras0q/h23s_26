@@ -79,6 +79,6 @@ func (h *Handler) Callback(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError).SetInternal(err)
 	}
 
-	// return c.String(http.StatusOK, "You are logged in!")
-	return c.JSON(200, tok)
+	return c.String(http.StatusOK, "You are logged in!")
+	
 }

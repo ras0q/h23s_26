@@ -2,8 +2,6 @@ package repository
 
 import (
 	"context"
-	"database/sql"
-	"errors"
 	"fmt"
 
 	"github.com/google/uuid"
@@ -84,20 +82,11 @@ func (r *Repository) PatchMission(ctx context.Context, params PatchMissionParams
 	if params.Clear {
 		patchID := uuid.New()
 
-		if err := r.db.GetContext(ctx, &UserMissionRelation{}, "SELECT * FROM user_mission_relations WHERE user_id = ? AND mission_id = ? ", params.UserID, params.MissionID); errors.Is(err, sql.ErrNoRows) {
-			if _, inserr := r.db.ExecContext(ctx, "INSERT INTO user_mission_relations(id,user_id,mission_id) VALUES(?,?,?)", patchID, params.UserID, params.MissionID); inserr != nil {
-				return fmt.Errorf("patch mission: %w", err)
-			}
-			return nil
-		} else if err != nil {
+		if _, err := r.db.ExecContext(ctx, "INSERT IGNORE INTO user_mission_relations(id,user_id,mission_id) VALUES(?,?,?)", patchID, params.UserID, params.MissionID); err != nil {
 			return fmt.Errorf("patch mission: %w", err)
 		}
+		return nil
 
-		return fmt.Errorf("patch mission: already exist")
-	}
-
-	if err := r.db.GetContext(ctx, &UserMissionRelation{}, "SELECT * FROM user_mission_relations WHERE user_id = ? AND mission_id = ? ", params.UserID, params.MissionID); errors.Is(err, sql.ErrNoRows) {
-		return fmt.Errorf("patch mission: %w", err)
 	}
 
 	if _, err := r.db.ExecContext(ctx, "DELETE FROM user_mission_relations WHERE user_id= ? AND mission_id= ? ", params.UserID, params.MissionID); err != nil {
@@ -105,5 +94,4 @@ func (r *Repository) PatchMission(ctx context.Context, params PatchMissionParams
 	}
 
 	return nil
-
 }
