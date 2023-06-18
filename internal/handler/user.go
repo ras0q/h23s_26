@@ -10,6 +10,7 @@ import (
 	vd "github.com/go-ozzo/ozzo-validation"
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
+	"github.com/traP-jp/h23s_26/internal/pkg/config"
 	"github.com/traP-jp/h23s_26/internal/repository"
 )
 
@@ -98,7 +99,25 @@ func (h *Handler) GetUser(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, res)
+}
 
+// GET /users/me
+func (h *Handler) GetMe(c echo.Context) error {
+	userID := c.Get(string(config.TraqIDKey)).(string)
+
+	user, err := h.repo.GetUser(c.Request().Context(), userID)
+	if errors.Is(err, sql.ErrNoRows) {
+		return echo.NewHTTPError(http.StatusNotFound).SetInternal(err)
+	} else if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError).SetInternal(err)
+	}
+
+	res := GetUserResponse{
+		ID:       user.ID,
+		Achieves: user.AchieveMissions,
+	}
+
+	return c.JSON(http.StatusOK, res)
 }
 
 // PATCH /users/:userID/missions/:missionID

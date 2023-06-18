@@ -79,11 +79,6 @@ func (h *Handler) Callback(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError).SetInternal(err)
 	}
 
-	sess.Values[config.TokenKey] = tok
-	if err := sess.Save(c.Request(), c.Response()); err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError).SetInternal(err)
-	}
-
 	traqconf := traq.NewConfiguration()
 	traqconf.HTTPClient = h.traqOauth2Config.Client(c.Request().Context(), tok)
 	client := traq.NewAPIClient(traqconf)
@@ -93,7 +88,11 @@ func (h *Handler) Callback(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError).SetInternal(err)
 	}
 
+	sess.Values[config.TokenKey] = tok
 	sess.Values[config.TraqIDKey] = user.Name
+	if err := sess.Save(c.Request(), c.Response()); err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError).SetInternal(err)
+	}
 
 	return c.JSON(http.StatusOK, CallbackResponse{
 		ID: user.Name,
