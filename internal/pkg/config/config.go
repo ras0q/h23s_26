@@ -40,7 +40,8 @@ func MySQL() *mysql.Config {
 			getEnv("DB_HOST", "localhost"),
 			getEnv("DB_PORT", "3306"),
 		),
-		DBName: getEnv("DB_NAME", "backend_sample"),
+		DBName:               getEnv("DB_NAME", "backend_sample"),
+		AllowNativePasswords: true,
 	}
 }
 
