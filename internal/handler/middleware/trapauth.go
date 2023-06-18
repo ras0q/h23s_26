@@ -22,7 +22,14 @@ func TrapAuth() echo.MiddlewareFunc {
 				return echo.NewHTTPError(http.StatusUnauthorized, "unauthorized")
 			}
 
-			c.Set(string(config.TokenKey), tok) 
+			c.Set(string(config.TokenKey), tok)
+
+			userID, ok := sess.Values[config.TraqIDKey].(string)
+			if !ok {
+				return echo.NewHTTPError(http.StatusUnauthorized, "unauthorized")
+			}
+
+			c.Set(string(config.TraqIDKey), userID)
 
 			return next(c)
 		}
