@@ -34,8 +34,7 @@ func (h *Handler) SetupRoutes(api *echo.Group) {
 		userAPI.POST("", h.PostUser)
 		userAPI.GET("/:userID", h.GetUser)
 		// userAPI.GET("/me", h.GetMe, middleware.TRAPAuth())
-		//userAPI.PATCH("/:userID/missions/:missionID", h.PatchMission, middleware.TrapAuth())
-		userAPI.PATCH("/:userID/missions/:missionID", h.PatchMission)
+		userAPI.PATCH("/:userID/missions/:missionID", h.PatchMission, middleware.TrapAuth())
 
 	}
 
