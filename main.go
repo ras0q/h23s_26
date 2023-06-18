@@ -45,9 +45,9 @@ func main() {
 		return false
 	}
 	proxyConfig.Rewrite = map[string]string{
-		"/dashboard*": "/",
-		"/ranking*":   "/",
-		"/mission*":   "/",
+		"/dashboard": "/dashboard",
+		"/ranking":   "/ranking",
+		"/missions":  "/missions",
 	}
 
 	e.Use(middleware.ProxyWithConfig(proxyConfig))

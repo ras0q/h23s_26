@@ -42,7 +42,7 @@ func MySQL() *mysql.Config {
 			getEnv("DB_HOST", "localhost"),
 			getEnv("DB_PORT", "3306"),
 		),
-		DBName:               getEnv("DB_NAME", "backend_sample"),
+		DBName:               getEnv("DB_NAME", "app"),
 		AllowNativePasswords: true,
 	}
 }
@@ -55,6 +55,9 @@ func TraqOAuth2() *traqoauth2.Config {
 }
 
 func ClientURL() *url.URL {
-	u, _ := url.Parse(getEnv("CLIENT_URL", "http://localhost:3000"))
+	u, err := url.Parse(getEnv("CLIENT_URL", "http://localhost:3000"))
+	if err != nil {
+		panic(err)
+	}
 	return u
 }
