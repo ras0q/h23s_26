@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"sort"
 	"time"
 
 	vd "github.com/go-ozzo/ozzo-validation"
@@ -18,8 +19,8 @@ type (
 	GetUsersResponse []GetUserResponse
 
 	GetUserResponse struct {
-		ID string `json:"id"`
-		// Ranking  int         `json:"ranking"`
+		ID       string      `json:"id"`
+		Ranking  int         `json:"ranking"`
 		Achieves []uuid.UUID `json:"achieves"`
 	}
 
@@ -36,16 +37,19 @@ type (
 // GET /users
 func (h *Handler) GetUsers(c echo.Context) error {
 	users, err := h.repo.GetUsers(c.Request().Context())
-
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError).SetInternal(err)
 	}
 
+	sort.Slice(users, func(i, j int) bool {
+		return len(users[i].AchieveMissions) > len(users[j].AchieveMissions)
+	})
+
 	res := make(GetUsersResponse, len(users))
 	for i, user := range users {
 		res[i] = GetUserResponse{
-			ID: user.ID,
-			// Ranking:  user.Ranking,
+			ID:       user.ID,
+			Ranking:  i + 1,
 			Achieves: user.AchieveMissions,
 		}
 	}
