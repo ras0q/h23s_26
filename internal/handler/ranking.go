@@ -1,8 +1,6 @@
 package handler
 
 import (
-	"database/sql"
-	"errors"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -11,7 +9,7 @@ import (
 // スキーマ定義
 type (
 	GetRankingResponse struct {
-		Ranking []string
+		Ranking []string `json:"ranking"`
 	}
 )
 
@@ -20,9 +18,7 @@ func (h *Handler) GetRanking(c echo.Context) error {
 
 	ranking, err := h.repo.GetRanking(c.Request().Context())
 
-	if errors.Is(err, sql.ErrNoRows) {
-		return echo.NewHTTPError(http.StatusNotFound).SetInternal(err)
-	} else if err != nil {
+	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError).SetInternal(err)
 	}
 
