@@ -5,9 +5,9 @@ import (
 
 	"github.com/gorilla/sessions"
 	"github.com/traP-jp/h23s_26/internal/handler"
+	"github.com/traP-jp/h23s_26/internal/migration"
 	"github.com/traP-jp/h23s_26/internal/pkg/config"
 	"github.com/traP-jp/h23s_26/internal/repository"
-	"github.com/traP-jp/h23s_26/internal/repository/migration"
 	"golang.org/x/oauth2"
 
 	"github.com/jmoiron/sqlx"
