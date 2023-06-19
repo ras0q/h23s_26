@@ -14,7 +14,7 @@ dev: ## Run the development server with live-reload
 
 .PHONY: dev-with-frontend
 dev-with-frontend: ## Run the development server with live-reload with frontend
-	[ -d ./frontend ] || git clone git@github.com:traP-jp/h23s_26-UI.git ./frontend
+	[ "$$FRONTEND_DIR" != "" ] || [ -d ./frontend ] || git clone git@github.com:traP-jp/h23s_26-UI.git --depth 1 ./frontend
 	docker compose -f compose.yml -f compose.frontend.yml up --build
 
 .PHONY: mod
