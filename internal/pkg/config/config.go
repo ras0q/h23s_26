@@ -43,6 +43,7 @@ func MySQL() *mysql.Config {
 			getEnv("DB_PORT", "3306"),
 		),
 		DBName:               getEnv("DB_NAME", "app"),
+		Collation:            "utf8mb4_general_ci",
 		AllowNativePasswords: true,
 	}
 }
