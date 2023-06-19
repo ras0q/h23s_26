@@ -12,6 +12,11 @@ help: ## Display this help
 dev: ## Run the development server with live-reload
 	docker compose up --build
 
+.PHONY: dev-with-frontend
+dev-with-frontend: ## Run the development server with live-reload with frontend
+	[ -d ./frontend ] || git clone git@github.com:traP-jp/h23s_26-UI.git ./frontend
+	docker compose -f compose.yml -f compose.frontend.yml up --build
+
 .PHONY: mod
 mod: ## Download the dependencies
 	go mod download

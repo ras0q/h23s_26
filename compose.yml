@@ -1,7 +1,7 @@
-version: '3'
+version: "3"
 
 services:
-  app:
+  backend:
     build:
       context: .
       dockerfile: Dockerfile
@@ -9,7 +9,7 @@ services:
       - ./main.go:/app/main.go
       - ./internal:/app/internal
     ports:
-      - 8080:8080
+      - "8080:8080"
     environment:
       APP_ADDR: :8080
       DB_USER: root
@@ -18,8 +18,8 @@ services:
       DB_PORT: "3306"
       DB_NAME: app
       TRAQ_CLIENT_ID: ${TRAQ_CLIENT_ID}
-      TRAQ_REDIRECT_URL: ${TRAQ_REDIRECT_URL}
-      CLIENT_URL: ${CLIENT_URL}
+      TRAQ_REDIRECT_URL: ${TRAQ_REDIRECT_URL:-http://localhost:8080/api/v1/oauth2/callback}
+      CLIENT_URL: ${CLIENT_URL:-http://frontend:3000}
     depends_on:
       mysql:
         condition: service_healthy

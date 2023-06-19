@@ -19,8 +19,17 @@ make dev
 API、DB、DB管理画面が起動します。
 各コンテナが起動したら、以下のURLにアクセスすることができます
 
-- <http://localhost:8080/> (API)
+- <http://localhost:8080/api/v1> (API)
 - <http://localhost:8081/> (DBの管理画面)
+
+### フロントエンドを含めた開発環境の実行
+
+```sh
+make dev-with-front
+```
+
+[開発環境の実行](#開発環境の実行)に加えて、フロントエンドの開発環境も起動します。
+<https://localhost:8080> にアクセスするとアプリのUIが表示されます。
 
 ### テストの実行
 

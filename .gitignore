@@ -1,6 +1,7 @@
 /.env
 /tmp/
-.env
+/.env
+/frontend
 
 # binary
 h23s_26
